@@ -17,15 +17,32 @@ public class StudentCourseService {
         return studentCourseRepository.findAll();
     }
 
-    public StudentCourse getById(String id) {
+    public StudentCourse getById(long id) {
         return studentCourseRepository.findById(id).get();
+    }
+
+    public List<StudentCourse> getBySId(String SId) {
+        return studentCourseRepository.findBySId(SId);
+    }
+
+    public List<StudentCourse> getByCId(String CId) {
+        return studentCourseRepository.findByCId(CId);
     }
 
     public void add(StudentCourse s) {
         studentCourseRepository.save(s);
     }
 
-    public void delete(String id) {
+    public void delete(long id) {
         studentCourseRepository.deleteById(id);
     }
+
+    public boolean check(String sid, String cid) {
+        return studentCourseRepository
+                .findBySId(sid)
+                .stream()
+                .filter(c -> c.getcId().equals(cid))
+                .count() == 0;
+    }
+
 }

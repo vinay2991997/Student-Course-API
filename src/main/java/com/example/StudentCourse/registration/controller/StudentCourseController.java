@@ -29,25 +29,38 @@ public class StudentCourseController {
     }
 
     @RequestMapping("/registration/{id}")
-    public StudentCourse getById(@PathVariable String id) {
+    public StudentCourse getById(@PathVariable long id) {
         return studentCourseService.getById(id);
+    }
+
+    @RequestMapping("/student/listCourses/{SId}")
+    public List<StudentCourse> getBySId(@PathVariable String SId) {
+        return studentCourseService.getBySId(SId);
+    }
+
+    @RequestMapping("/enrolledInCourse/{CId}")
+    public List<StudentCourse> getByCId(@PathVariable String CId) {
+        return studentCourseService.getByCId(CId);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/registration")
     public void add(@RequestBody StudentCourse s) {
-        if(studentRepository.existsById(s.getsId()) && courseRepository.existsById(s.getcId()))
+        if(studentRepository.existsById(s.getsId())
+                && courseRepository.existsById(s.getcId())
+                && studentCourseService.getBySId(s.getsId()).size() < 6
+                && studentCourseService.check(s.getsId(),s.getcId()))
             studentCourseService.add(s);
         else
             return;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/registration/{id}")
-    public void update(@PathVariable String id,@RequestBody StudentCourse s) {
+    public void update(@PathVariable long id,@RequestBody StudentCourse s) {
         studentCourseService.add(s);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/registration/{id}")
-    public void delete(@PathVariable String id) {
+    public void delete(@PathVariable long id) {
         studentCourseService.delete(id);
     }
 
